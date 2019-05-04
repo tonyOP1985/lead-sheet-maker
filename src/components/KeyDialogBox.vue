@@ -28,19 +28,19 @@ export default {
   props: {
     keys: {
       type: Array,
-      required: true,
-    },
+      required: true
+    }
   },
   data() {
     return {
       row: null,
-      key: '',
+      key: ''
     };
   },
   methods: {
     selectKeys() {
       this.$emit('select-key', this.row);
-    },
-  },
+    }
+  }
 };
 </script>

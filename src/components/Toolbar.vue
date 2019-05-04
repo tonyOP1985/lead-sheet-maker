@@ -4,7 +4,7 @@
              flat>
     <v-spacer></v-spacer>
     <v-toolbar-items>
-      <v-btn flat>
+      <v-btn flat @click="newDialog = true">
         <v-icon>add</v-icon>
         <span>New</span>
       </v-btn>
@@ -19,10 +19,19 @@
                     @select-key="selectKeys"/>
     </v-dialog>
     <v-dialog v-model="timeSignatureDialog"
-              width="500">
-      <TimeSignatureDialog :signatures="signatures"/>
+              width="300">
+      <TimeSignatureDialog :signatures="signatures"
+                           @select-time-signature="selectedTimeSignature"
+                           @close-dialog="timeSignatureDialog = false"/>
     </v-dialog>
-    <v-dialog></v-dialog>
+    <v-dialog v-model="newDialog"
+              width="500">
+      <NewDialog :keys="keys"
+                 :signatures="signatures"
+                 @create-lead-sheet="createLeadSheet"
+                 @close-dialog="newDialog = false"
+                 @select-key="selectKeys"/>
+    </v-dialog>
   </v-toolbar>
 </template>
 
@@ -31,11 +40,13 @@ import { majorKeys, minorKeys, timeSignatures } from '@/lib/constants';
 
 import KeyDialogBox from '@/components/KeyDialogBox';
 import TimeSignatureDialog from '@/components/TimeSignatureDialog';
+import NewDialog from '@/components/NewDialog';
 
 export default {
   components: {
+    NewDialog,
     KeyDialogBox,
-    TimeSignatureDialog,
+    TimeSignatureDialog
   },
   data() {
     return {
@@ -45,6 +56,7 @@ export default {
       keyDialog: false,
       timeSignatureDialog: false,
       transposeDialog: false,
+      newDialog: false
     };
   },
   computed: {
@@ -53,7 +65,7 @@ export default {
     },
     signatures() {
       return timeSignatures;
-    },
+    }
   },
   methods: {
     selectKeys(value) {
@@ -65,6 +77,12 @@ export default {
         this.major = true;
       }
     },
-  },
+    selectedTimeSignature(value) {
+      this.timeSignatureDialog = false;
+    },
+    createLeadSheet(value) {
+      this.$store.dispatch('collectMeta', value);
+    }
+  }
 };
 </script>
