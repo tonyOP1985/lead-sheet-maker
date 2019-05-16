@@ -1,7 +1,12 @@
 <template>
   <v-app>
     <ToolBar></ToolBar>
-    <LeadSheet></LeadSheet>
+    <v-layout justify-center
+              class="pt-4">
+      <v-flex xs12 sm10 md8>
+        <LeadSheet></LeadSheet>
+      </v-flex>
+    </v-layout>
   </v-app>
 </template>
 
@@ -22,3 +27,9 @@ export default {
   }
 };
 </script>
+
+<style lang="scss" scoped>
+  .leadsheet-wrapper {
+    width: 60%;
+  }
+</style>
