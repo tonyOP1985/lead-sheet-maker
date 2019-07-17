@@ -19,23 +19,24 @@
                 row>
         <v-flex v-for="(bar, index) in bars"
                 :key="index">
-          <v-icon class="edit-icon"
+          <v-icon v-if="!edit"
+                  class="edit-icon"
                   @click="editMeasure(index, sysIndex)">
             edit
+          </v-icon>
+          <v-icon v-else
+                  class="edit-icon"
+                  @click="editMeasure(index, sysIndex)">
+            check
           </v-icon>
           <v-layout row
                     class="measure"
                     :class="{ 'left-bar-line': index === 0 }">
-            <v-flex v-for="(beat, index) in beats"
-                    :key="index"
-                    @click="editMeasure()"
-                    xs3>
-              <div v-if="index === 0"
-                   class="caption"
-                   :class="{ 'pl-1': index === 0 }">
-                Gm7
-              </div>
-            </v-flex>
+            <Beat v-for="(beat, index) in beats"
+                  :key="index"
+                  :index="index"
+                  :edit="edit"
+                  xs3 />
           </v-layout>
         </v-flex>
       </v-layout>
@@ -44,7 +45,12 @@
 </template>
 
 <script>
+import Beat from './Beat'; 
+
 export default {
+  components: {
+    Beat
+  },
   data() {
     return {
       title: 'Cheap Sunglasses',
@@ -58,7 +64,6 @@ export default {
   methods: {
     editMeasure(index, sysIndex) {
       this.edit = !this.edit;
-      console.log("logging | editing the measure >>>>>>>", index, sysIndex);
     }
   }
 };
@@ -75,6 +80,7 @@ export default {
 
   .measure {
     border-right: 1px solid black;
+    max-height: 20px;
   }
 
   .edit-icon {
