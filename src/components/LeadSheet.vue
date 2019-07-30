@@ -3,67 +3,59 @@
     <v-container class="lead-sheet">
       <v-layout column justify-center>
         <v-flex xs12>
-          <h2 class="text-xs-center">{{ title }}</h2>
+          <h2 class="text-xs-center">{{ meta.title }}</h2>
         </v-flex>
         <v-flex>
-          <h4 class="text-xs-center">{{ artist }}</h4>
+          <h4 class="text-xs-center">{{ meta.artist }}</h4>
         </v-flex>
       </v-layout>
-      <v-layout column>
-        <span>4</span>
-        <span>4</span>
+      <v-layout column class="meter" v-if="meta.meter">
+        <span>{{ meta.meter.beats }}</span>
+        <span>{{ meta.meter.value }}</span>
       </v-layout>
-      <v-layout v-for="(system, sysIndex) in systems"
-                :key="sysIndex"
-                class="system mt-4"
-                row>
-        <v-flex v-for="(bar, index) in bars"
-                :key="index">
-          <v-icon v-if="!edit"
-                  class="edit-icon"
-                  @click="editMeasure(index, sysIndex)">
-            edit
-          </v-icon>
-          <v-icon v-else
-                  class="edit-icon"
-                  @click="editMeasure(index, sysIndex)">
-            check
-          </v-icon>
-          <v-layout row
-                    class="measure"
-                    :class="{ 'left-bar-line': index === 0 }">
-            <Beat v-for="(beat, index) in beats"
-                  :key="index"
-                  :index="index"
-                  :edit="edit"
-                  xs3 />
-          </v-layout>
-        </v-flex>
-      </v-layout>
+      <System v-for="(system, index) in systems"
+              :key="index"
+              :id="index"
+              :index="index"
+              @set-system-data="setData"/>
     </v-container>
   </v-card>
 </template>
 
 <script>
-import Beat from './Beat'; 
+import Beat from './Beat';
+import System from './System';
+import { timeSignatures } from '../lib/constants';
+import { mapGetters } from 'vuex';
 
 export default {
   components: {
-    Beat
+    Beat,
+    System
   },
   data() {
     return {
       title: 'Cheap Sunglasses',
       artist: 'ZZ Top',
       systems: 4,
-      bars: 4,
-      beats: 4,
-      edit: false
+      input: [],
+      meter: timeSignatures[0],
+      temp: [],
+      form: {
+        systems: []
+      }
     };
   },
+  computed: {
+    ...mapGetters(['meta'])
+  },
   methods: {
-    editMeasure(index, sysIndex) {
-      this.edit = !this.edit;
+    setData(payload) {
+      this.temp.push(payload);
+      this.form.systems = this.temp;
+      if (this.form.systems.length === this.systems) {
+        this.temp = [];
+      }
     }
   }
 };
@@ -85,5 +77,11 @@ export default {
 
   .edit-icon {
     font-size: .8rem;
+  }
+
+  .meter {
+    position: absolute;
+    top: 30%;
+    left: 8%;
   }
 </style>

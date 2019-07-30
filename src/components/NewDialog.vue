@@ -7,36 +7,41 @@
       <v-container grid-list-md>
         <v-layout row wrap>
           <v-flex xs12>
-            <v-text-field v-model="title"
+            <v-text-field v-model="form.title"
                           label="Title">
             </v-text-field>
           </v-flex>
           <v-flex xs12>
-            <v-text-field v-model="artist"
+            <v-text-field v-model="form.artist"
                           label="Artist">
             </v-text-field>
           </v-flex>
           <v-flex xs6>
-            <v-radio-group v-model="row" row @click="selectKeys">
+            <v-radio-group v-model="form.row" row @click="selectKeys">
               <v-radio label="Major" value="major"></v-radio>
               <v-radio label="Minor" value="minor"></v-radio>
             </v-radio-group>
           </v-flex>
           <v-flex xs6>
-            <v-select v-model="key"
+            <v-select v-model="form.key"
                       :items="keys"
                       hide-selected
                       label="Key">
             </v-select>
           </v-flex>
           <v-flex xs12>
-            <v-select v-model="meter"
+            <v-select v-model="form.meter"
                       :items="signatures"
                       item-text="text"
-                      item-value="text"
+                      item-value="data"
                       hide-selected
                       label="Time Signature">
             </v-select>
+          </v-flex>
+          <v-flex xs12>
+            <v-text-field v-model="form.measures"
+                          label="Measures">
+            </v-text-field>
           </v-flex>
         </v-layout>
       </v-container>
@@ -66,11 +71,14 @@ export default {
   },
   data() {
     return {
-      title: '',
-      artist: '',
-      key: null,
-      meter: null,
-      row: null
+      form: {
+        title: '',
+        artist: '',
+        key: '',
+        meter: '',
+        row: '',
+        measures: 32
+      }
     };
   },
   methods: {
@@ -81,13 +89,7 @@ export default {
       this.$emit('select-key', this.row);
     },
     createSong() {
-      const meta = {
-        title: this.title,
-        artist: this.artist,
-        key: this.key,
-        meter: this.meter
-      };
-      this.$emit('create-lead-sheet', meta);
+      this.$emit('create-lead-sheet', this.form);
       this.$emit('close-dialog');
     },
     closeDialog() {

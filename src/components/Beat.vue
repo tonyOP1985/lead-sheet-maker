@@ -1,44 +1,119 @@
 <template>
   <v-flex>
-    <div v-if="!edit"
-        class="caption"
-        :class="{ 'pl-1': index === 0 }">
-      {{ userInput }}
+    <div v-if="!isEditing"
+         class="body-1 beat"
+         :class="{ 'pl-1': index === 0 }">
+
+      <span v-show="form.startsRepeat"
+            class="title font-weight-bold">
+        :
+      </span>   
+      <span class="body-1">
+        {{ formattedInput }}
+      </span>
+      <span v-show="form.endsRepeat"
+            class="title font-weight-bold right pr-1">
+        :
+      </span>  
     </div>
     <div v-else
-        class="caption"
-        :class="{ 'pl-1': index === 0 }">
-      <v-text-field v-model="userInput"
+         class="body-1"
+         :class="{ 'pl-1': index === 0 }">
+      <v-text-field v-model="form.text"
                     hide-details
-                    class="mt-0 pt-0">
+                    class="ma-0 pa-0 caption"
+                    @keyup.enter="setValue()">
       </v-text-field>
     </div>
   </v-flex>
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
+
 export default {
   props: {
-    edit: {
-      type: Boolean,
+    index: {
+      type: Number,
       required: true
     },
-    index: {
+    id: {
+      type: Number,
+      required: true
+    },
+    systemID: {
+      type: Number,
+      required: true
+    },
+    measureID: {
       type: Number,
       required: true
     }
   },
   data() {
     return {
-      userInput: 'Gm7'
+      form: {
+        measureId: this.measureID,
+        systemId: this.systemID,
+        beatId: this.id,
+        count: this.index + 1,
+        startsRepeat: null,
+        endsRepeat: null,
+        text: null
+      }
+    }
+  },
+  computed: {
+    sendData() {
+      if (this.isEditing) {
+        this.$emit('set-beat-data', this.form);
+      }
+    },
+    // TODO: handling of repeats works for now.  will need to revisit
+    formattedInput() {
+      const inputLen = this.form.text ? this.form.text.length : 0;
+      if (this.form.text) {
+        if (this.form.text.charAt(0) === ':' && this.id === 0) {
+          this.form.startsRepeat = true;
+          return this.form.text.substring(1);
+        } else if (this.form.text.charAt(inputLen - 1) === ':' && this.id !== 0) {
+          this.form.endsRepeat = true;
+          return this.form.text.substring(0, inputLen - 1);
+        } else {
+          return this.form.text;
+        }
+      } else {
+        return '';
+      }
+    },
+    ...mapGetters(['isEditing'])
+  },
+  watch: {
+    isEditing(value) {
+      if (value) {
+        this.sendData;
+      }
+    }
+  },
+  methods: {
+    setValue() {
+      const payload = {
+        index: this.index,
+        value: this.userInput
+      };
+      this.$store.dispatch('setBeatsData', payload);
     }
   }
 }
 </script>
 
-<style lang="scss" scoped>
-  .v-text-field__slot > input {
-    padding-top: 0;
+<style scoped>
+  .v-text-field input {
+    padding: 0 0 3px 0 !important;
+  }
+
+  .beat {
+    height: 18px;
   }
 </style>
 
