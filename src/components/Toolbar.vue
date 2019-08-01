@@ -11,6 +11,17 @@
       <v-btn flat @click="keyDialog = true">Key</v-btn>
       <v-btn flat @click="timeSignatureDialog = true">Key Signature</v-btn>
       <v-btn flat>Transpose</v-btn>
+      <v-btn flat @click="addMeasureDialog = true">Add Measures</v-btn>
+      <v-btn v-if="isEditing"
+             flat
+             @click="toggleEdit()">
+        <v-icon>check</v-icon>
+      </v-btn>
+      <v-btn v-else
+             flat
+             @click="toggleEdit()">
+        <v-icon>edit</v-icon>
+      </v-btn>
     </v-toolbar-items>
     <v-spacer></v-spacer>
     <v-dialog v-model="keyDialog"
@@ -32,6 +43,10 @@
                  @close-dialog="newDialog = false"
                  @select-key="selectKeys"/>
     </v-dialog>
+    <v-dialog v-model="addMeasureDialog"
+              width="300">
+      <AddMeasure @close-dialog="addMeasureDialog = false"/>
+    </v-dialog>
   </v-toolbar>
 </template>
 
@@ -41,12 +56,16 @@ import { majorKeys, minorKeys, timeSignatures } from '@/lib/constants';
 import KeyDialogBox from '@/components/KeyDialogBox';
 import TimeSignatureDialog from '@/components/TimeSignatureDialog';
 import NewDialog from '@/components/NewDialog';
+import AddMeasure from '@/components/AddMeasure';
+
+import { mapGetters } from 'vuex';
 
 export default {
   components: {
     NewDialog,
     KeyDialogBox,
-    TimeSignatureDialog
+    TimeSignatureDialog,
+    AddMeasure
   },
   data() {
     return {
@@ -56,7 +75,8 @@ export default {
       keyDialog: false,
       timeSignatureDialog: false,
       transposeDialog: false,
-      newDialog: false
+      newDialog: false,
+      addMeasureDialog: false
     };
   },
   computed: {
@@ -65,7 +85,8 @@ export default {
     },
     signatures() {
       return timeSignatures;
-    }
+    },
+    ...mapGetters(['isEditing'])
   },
   methods: {
     selectKeys(value) {
@@ -80,8 +101,11 @@ export default {
     selectedTimeSignature(value) {
       this.timeSignatureDialog = false;
     },
-    createLeadSheet(value) {
-      this.$store.dispatch('collectMeta', value);
+    createLeadSheet(payload) {
+      this.$store.dispatch('collectMeta', payload);
+    },
+    toggleEdit() {
+      this.$store.dispatch('editForm');
     }
   }
 };

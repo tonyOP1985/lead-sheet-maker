@@ -115,43 +115,59 @@ const minorKeys = [
 const timeSignatures = [
   {
     text: '4/4',
-    beats: 4,
-    value: 4
+    data: {
+      beats: 4,
+      value: 4
+    }
   },
   {
     text: '3/4',
-    beats: 3,
-    value: 4
+    data: {
+      beats: 3,
+      value: 4
+    }
   },
   {
     text: '2/4',
-    beats: 2,
-    value: 4
+    data: {
+      beats: 2,
+      value: 4
+    }
   },
   {
     text: '5/4',
-    beats: 5,
-    value: 4
+    data: {
+      beats: 5,
+      value: 4
+    }
   },
   {
     text: '6/4',
-    beats: 6,
-    value: 4
+    data: {
+      beats: 6,
+      value: 4
+    }
   },
   {
     text: '1/4',
-    beats: 1,
-    value: 4
+    data: {
+      beats: 1,
+      value: 4
+    }
   },
   {
     text: '6/8',
-    beats: 6,
-    value: 8
+    data: {
+      beats: 6,
+      value: 8
+    }
   },
   {
     text: '12/8',
-    beats: 4,
-    value: 8
+    data: {
+      beats: 4,
+      value: 8
+    }
   }
 ];
 
