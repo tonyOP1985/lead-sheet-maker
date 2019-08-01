@@ -40,11 +40,20 @@
         </v-flex>
       </v-layout>
     </v-container>
+    <v-dialog v-model="edit"
+              width="500">
+      <EditMeasure></EditMeasure>
+    </v-dialog>
   </v-card>
 </template>
 
 <script>
+import EditMeasure from './EditMeasure';
+
 export default {
+  components: {
+    EditMeasure
+  },
   data() {
     return {
       title: 'Cheap Sunglasses',
@@ -58,7 +67,6 @@ export default {
   methods: {
     editMeasure(index, sysIndex) {
       this.edit = !this.edit;
-      console.log("logging | editing the measure >>>>>>>", index, sysIndex);
     }
   }
 };
