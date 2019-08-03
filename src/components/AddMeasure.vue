@@ -19,7 +19,7 @@
                 @click="closeDialog">Cancel</v-btn>
       </v-card-actions>
     </v-container>
-  </v-card>  
+  </v-card>
 </template>
 
 <script>
@@ -27,15 +27,15 @@ export default {
   data() {
     return {
       measures: ''
-    }
+    };
   },
   methods: {
     addMeasures() {
-      console.log("logging | measures >>>>>>>", measures);
+      console.log('logging | measures >>>>>>>', measures);
     },
     closeDialog() {
       this.$emit('close-dialog');
     }
   }
-}
+};
 </script>

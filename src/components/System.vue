@@ -2,7 +2,7 @@
   <v-layout class="system">
     <v-layout>
       <v-tooltip bottom>
-        <template v-slot:activator="{ on }">  
+        <template v-slot:activator="{ on }">
           <v-icon @click="editSystem"
                   v-on="on"
                   class="edit-system"
@@ -13,11 +13,11 @@
         <span>Edit System {{ index }}</span>
       </v-tooltip>
     </v-layout>
-    <Measure v-for="(measure, measureIndex) in measures" 
+    <Measure v-for="(measure, measureIndex) in measures"
              :key="measureIndex"
              :systemID="id"
              :id="measureIndex"
-             class="mt-4"
+             class="mt-5 pt-2"
              :measureIndex="measureIndex"
              @set-measure-data="setMeasureData"/>
 
@@ -63,11 +63,14 @@ export default {
     id: {
       type: Number,
       required: true
+    },
+    measures: {
+      type: Number,
+      required: true
     }
   },
   data() {
     return {
-      measures: 4,
       newMeasures: null,
       temp: [],
       dialog: false,
@@ -76,7 +79,7 @@ export default {
         sequence: this.index,
         measures: []
       }
-    }
+    };
   },
   computed: {
     systemIndex() {

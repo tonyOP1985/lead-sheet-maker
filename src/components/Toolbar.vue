@@ -15,12 +15,12 @@
       <v-btn v-if="isEditing"
              flat
              @click="toggleEdit()">
-        <v-icon>check</v-icon>
+        Edit
       </v-btn>
       <v-btn v-else
              flat
              @click="toggleEdit()">
-        <v-icon>edit</v-icon>
+        Save
       </v-btn>
     </v-toolbar-items>
     <v-spacer></v-spacer>
@@ -103,6 +103,7 @@ export default {
     },
     createLeadSheet(payload) {
       this.$store.dispatch('collectMeta', payload);
+      this.$store.dispatch('initalizeBars');
     },
     toggleEdit() {
       this.$store.dispatch('editForm');

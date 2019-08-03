@@ -3,7 +3,7 @@
     <v-layout row
               class="measure"
               :class="{ 'left-bar-line': measureIndex === 0 }">
-      <Beat v-for="(beat, index) in beats"
+      <Beat v-for="(beat, index) in meta.meter.beats"
             :key="index"
             :index="index"
             :id="index"
@@ -16,7 +16,9 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import Beat from './Beat';
+
 export default {
   components: {
     Beat
@@ -37,14 +39,16 @@ export default {
   },
   data() {
     return {
-      beats: 4,
       temp: [],
       form: {
         measureId: this.id,
         systemId: this.systemID,
         beats: []
       }
-    }
+    };
+  },
+  computed: {
+    ...mapGetters(['meta'])
   },
   methods: {
     setBeatData(payload) {
@@ -56,7 +60,7 @@ export default {
       }
     }
   }
-}
+};
 </script>
 
 <style scoped>

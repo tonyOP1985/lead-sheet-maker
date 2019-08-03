@@ -7,21 +7,21 @@
       <span v-show="form.startsRepeat"
             class="title font-weight-bold">
         :
-      </span>   
+      </span>
       <span class="body-1">
         {{ formattedInput }}
       </span>
       <span v-show="form.endsRepeat"
             class="title font-weight-bold right pr-1">
         :
-      </span>  
+      </span>
     </div>
     <div v-else
          class="body-1"
          :class="{ 'pl-1': index === 0 }">
       <v-text-field v-model="form.text"
                     hide-details
-                    class="ma-0 pa-0 caption"
+                    class="ma-0 pa-0 caption custom-text-field"
                     @keyup.enter="setValue()">
       </v-text-field>
     </div>
@@ -61,7 +61,7 @@ export default {
         endsRepeat: null,
         text: null
       }
-    }
+    };
   },
   computed: {
     sendData() {
@@ -76,15 +76,13 @@ export default {
         if (this.form.text.charAt(0) === ':' && this.id === 0) {
           this.form.startsRepeat = true;
           return this.form.text.substring(1);
-        } else if (this.form.text.charAt(inputLen - 1) === ':' && this.id !== 0) {
+        } if (this.form.text.charAt(inputLen - 1) === ':' && this.id !== 0) {
           this.form.endsRepeat = true;
           return this.form.text.substring(0, inputLen - 1);
-        } else {
-          return this.form.text;
         }
-      } else {
-        return '';
+        return this.form.text;
       }
+      return '';
     },
     ...mapGetters(['isEditing'])
   },
@@ -104,7 +102,7 @@ export default {
       this.$store.dispatch('setBeatsData', payload);
     }
   }
-}
+};
 </script>
 
 <style scoped>
@@ -115,5 +113,8 @@ export default {
   .beat {
     height: 18px;
   }
-</style>
 
+  .custom-text-field.v-input__control.v-input__slot.v-text-field__slot input {
+    padding: 0 !important;
+  }
+</style>

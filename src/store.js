@@ -5,14 +5,16 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    meta: {},
+    meta: null,
     beatsData: [],
+    systems: null,
     isEditing: true
   },
   getters: {
     meta: state => state.meta,
     beatsData: state => state.beatsData,
-    isEditing: state => state.isEditing
+    isEditing: state => state.isEditing,
+    systems: state => state.systems
   },
   actions: {
     collectMeta({ commit }, meta) {
@@ -23,6 +25,28 @@ export default new Vuex.Store({
     },
     editForm({ commit }) {
       commit('edit_form');
+    },
+    initalizeBars({ commit, state }) {
+      const measures = parseInt(state.meta.measures);
+      const measuresPerLine = parseInt(state.meta.measuresPerLine);
+      let lines = measures/measuresPerLine;
+      const isInt = Number.isInteger(lines);
+      const lastLineMeasures = measures % measuresPerLine;
+      console.log("logging | typeof lastLineMeasures >>>>>>>", typeof lastLineMeasures);
+      if (!isInt) {
+        lines = Math.floor(lines);
+        lines = lines + 1;
+      }
+
+      const systems = [];
+      for (let i = 0; i < lines; i++) {
+        const barNumber = { measures: null };
+        if (!isInt && lines[i] === lines) barNumber.measures = lastLineMeasures;
+
+        barNumber.measures = state.meta.measuresPerLine;
+        systems.push(barNumber);
+      }
+      commit('set_systems', systems);
     }
   },
   mutations: {
@@ -34,6 +58,9 @@ export default new Vuex.Store({
     },
     edit_form(state) {
       state.isEditing = !state.isEditing;
+    },
+    set_systems(state, sys) {
+      state.systems = sys;
     }
   }
 });
@@ -42,7 +69,7 @@ const testObj = {
   song: {
     meta: {
       title: '',
-      key: '',
+      key: ''
       // other meta things
     },
     form: [

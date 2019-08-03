@@ -1,5 +1,5 @@
 <template>
-  <v-card>
+  <v-card v-if="meta">
     <v-container class="lead-sheet">
       <v-layout column justify-center>
         <v-flex xs12>
@@ -17,6 +17,7 @@
               :key="index"
               :id="index"
               :index="index"
+              :measures="system.measures"
               @set-system-data="setData"/>
     </v-container>
     <v-dialog v-model="edit"
@@ -27,31 +28,29 @@
 </template>
 
 <script>
-import Beat from './Beat';
+import { mapGetters } from 'vuex';
 import System from './System';
 import { timeSignatures } from '../lib/constants';
-import { mapGetters } from 'vuex';
+import EditMeasure from './EditMeasure.vue';
 
 export default {
   components: {
-    Beat,
-    System
+    System,
+    EditMeasure
   },
   data() {
     return {
-      title: 'Cheap Sunglasses',
-      artist: 'ZZ Top',
-      systems: 4,
       input: [],
       meter: timeSignatures[0],
       temp: [],
+      edit: false,
       form: {
         systems: []
       }
     };
   },
   computed: {
-    ...mapGetters(['meta'])
+    ...mapGetters(['meta', 'systems'])
   },
   methods: {
     setData(payload) {
@@ -85,7 +84,7 @@ export default {
 
   .meter {
     position: absolute;
-    top: 30%;
+    top: 17%;
     left: 8%;
   }
 </style>

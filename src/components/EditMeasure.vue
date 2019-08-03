@@ -50,7 +50,7 @@ export default {
   data() {
     return {
       meter: ''
-    }
+    };
   },
   computed: {
     // keys() {
@@ -60,5 +60,5 @@ export default {
       return timeSignatures;
     }
   }
-}
+};
 </script>

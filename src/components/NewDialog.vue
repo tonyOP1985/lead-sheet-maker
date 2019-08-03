@@ -43,6 +43,13 @@
                           label="Measures">
             </v-text-field>
           </v-flex>
+          <v-flex xs12>
+            <v-text-field v-model="form.measuresPerLine"
+                          label="Measures Per Line"
+                          hint="Can be changed later"
+                          persistent-hint>
+            </v-text-field>
+          </v-flex>
         </v-layout>
       </v-container>
     </v-card-text>
@@ -77,7 +84,8 @@ export default {
         key: '',
         meter: '',
         row: '',
-        measures: 32
+        measures: 32,
+        measuresPerLine: 4
       }
     };
   },
