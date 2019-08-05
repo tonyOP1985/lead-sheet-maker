@@ -14,10 +14,20 @@
       </v-tooltip>
     </v-layout>
     <v-layout row>
+      <v-flex align-self-end
+              pt-5
+              mr-1
+              v-if="index === 0">
+        <v-layout column justify-end>
+          <span>{{ 4 }}</span>
+          <span>{{ 4 }}</span>
+        </v-layout>
+      </v-flex>
       <Measure v-for="(measure, measureIndex) in measures"
               :key="measureIndex"
               :systemID="id"
               :id="measureIndex"
+              :class="{ 'pl-2': index === 0, 'mt-5': index !== 0 }"
               class="mt-5 pt-2"
               :measureIndex="measureIndex"
               @set-measure-data="setMeasureData"/>
