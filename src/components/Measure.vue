@@ -1,5 +1,5 @@
 <template>
-  <v-flex xs4>
+  <v-flex>
     <v-layout row
               class="measure"
               :class="{ 'left-bar-line': measureIndex === 0 }">

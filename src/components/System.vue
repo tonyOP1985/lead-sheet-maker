@@ -13,13 +13,15 @@
         <span>Edit System {{ index }}</span>
       </v-tooltip>
     </v-layout>
-    <Measure v-for="(measure, measureIndex) in measures"
-             :key="measureIndex"
-             :systemID="id"
-             :id="measureIndex"
-             class="mt-5 pt-2"
-             :measureIndex="measureIndex"
-             @set-measure-data="setMeasureData"/>
+    <v-layout row>
+      <Measure v-for="(measure, measureIndex) in measures"
+              :key="measureIndex"
+              :systemID="id"
+              :id="measureIndex"
+              class="mt-5 pt-2"
+              :measureIndex="measureIndex"
+              @set-measure-data="setMeasureData"/>
+    </v-layout>
 
     <!-- edit system dialog -->
     <v-dialog v-model="dialog" width="300">

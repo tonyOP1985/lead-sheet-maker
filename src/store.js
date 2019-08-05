@@ -8,13 +8,13 @@ export default new Vuex.Store({
     meta: null,
     beatsData: [],
     systems: null,
-    isEditing: true
+    isEditing: true,
   },
   getters: {
     meta: state => state.meta,
     beatsData: state => state.beatsData,
     isEditing: state => state.isEditing,
-    systems: state => state.systems
+    systems: state => state.systems,
   },
   actions: {
     collectMeta({ commit }, meta) {
@@ -26,13 +26,15 @@ export default new Vuex.Store({
     editForm({ commit }) {
       commit('edit_form');
     },
-    initalizeBars({ commit, state }) {
-      const measures = parseInt(state.meta.measures);
+    createMeasures({ commit, state }, newMeasures=null) {
+      let measures;
+      if (!newMeasures) measures = parseInt(state.meta.measures);
+      else measures = parseInt(newMeasures);
+
       const measuresPerLine = parseInt(state.meta.measuresPerLine);
       let lines = measures/measuresPerLine;
       const isInt = Number.isInteger(lines);
       const lastLineMeasures = measures % measuresPerLine;
-      console.log("logging | typeof lastLineMeasures >>>>>>>", typeof lastLineMeasures);
       if (!isInt) {
         lines = Math.floor(lines);
         lines = lines + 1;
@@ -41,13 +43,14 @@ export default new Vuex.Store({
       const systems = [];
       for (let i = 0; i < lines; i++) {
         const barNumber = { measures: null };
-        if (!isInt && lines[i] === lines) barNumber.measures = lastLineMeasures;
-
-        barNumber.measures = state.meta.measuresPerLine;
+        if (!isInt && i + 1 === lines) barNumber.measures = lastLineMeasures;
+        else barNumber.measures = parseInt(state.meta.measuresPerLine);
         systems.push(barNumber);
       }
-      commit('set_systems', systems);
-    }
+
+      if (!newMeasures) commit('set_systems', systems);
+      else commit('set_systems', [...state.systems, ...systems]);
+    },
   },
   mutations: {
     set_meta(state, meta) {
@@ -61,8 +64,8 @@ export default new Vuex.Store({
     },
     set_systems(state, sys) {
       state.systems = sys;
-    }
-  }
+    },
+  },
 });
 
 const testObj = {

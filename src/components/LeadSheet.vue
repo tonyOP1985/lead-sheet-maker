@@ -9,10 +9,10 @@
           <h4 class="text-xs-center">{{ meta.artist }}</h4>
         </v-flex>
       </v-layout>
-      <v-layout column class="meter" v-if="meta.meter">
+      <!-- <v-layout column class="meter" v-if="meta.meter">
         <span>{{ meta.meter.beats }}</span>
         <span>{{ meta.meter.value }}</span>
-      </v-layout>
+      </v-layout> -->
       <System v-for="(system, index) in systems"
               :key="index"
               :id="index"

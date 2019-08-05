@@ -103,7 +103,7 @@ export default {
     },
     createLeadSheet(payload) {
       this.$store.dispatch('collectMeta', payload);
-      this.$store.dispatch('initalizeBars');
+      this.$store.dispatch('createMeasures');
     },
     toggleEdit() {
       this.$store.dispatch('editForm');
